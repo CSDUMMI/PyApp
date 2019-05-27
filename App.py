@@ -1,5 +1,4 @@
 import json, config
-from flask import Flask, request, render_template
 
 class App:
     def __init__(self,name,filename=None,port=None,host=None):
@@ -15,6 +14,7 @@ class App:
 
         # If host or port is given, initate a Flask app
         if host or port:
+            from flask import Flask, request, render_template as self.Flask
             self.app = Flask(self.name)
 
         if host:
@@ -38,10 +38,24 @@ class App:
             event_reaction(self)
 
     def start(self):
+        """
+        This is called on startup of the app
+        """
         self.__react_to_event__('start')
 
     def shutdown(self):
+        """
+        This is called on shutdown
+        """
         self.__react_to_event__('shutdown')
 
     def route(self,rule,endpoint,view_func):
+        """
+        Can be used, but you should rather use it as decorator:
+        @app.app.route('/')
+        def view_func():
+
+        """
         self.app.add_url_rule(rule,endpoint,view_func)
+
+    def connect_db():
